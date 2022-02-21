@@ -1,7 +1,7 @@
-const FormInput = ({ label, ...otherProps }) => {
+const FormInput = ({ label, children, ...otherProps }) => {
   return (
     <div className="group">
-      <input {...otherProps} className="form-input" />
+      <input {...otherProps} />
       {label && (
         <label
           className={`${

@@ -3,8 +3,8 @@ import { useState } from "react";
 import axios from "axios";
 
 //components
-import FormInput from "../Form-input/Form-input";
-import CustomButton from "../custom-button/custom-button.component";
+import FormInput from "../../components/Form-input/Form-input";
+import CustomButton from "../../components/custom-button/custom-button.component";
 
 const SignInPage = ({ URL }) => {
   const [userData, setUserData] = useState([]);
