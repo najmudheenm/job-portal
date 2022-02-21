@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "./Job-creating.style.scss";
+import axios from "axios";
 import {
   Form,
   Input,
   Button,
   Radio,
+  Checkbox,
   Select,
   Cascader,
   DatePicker,
@@ -15,10 +17,36 @@ import {
 const { TextArea } = Input;
 
 const JobCreating = () => {
-  const [componentSize, setComponentSize] = useState("default");
+  const [formState, setFormState] = useState({
+    jobTitle: "",
+    minExp: 0,
+    maxExp: 1,
+    shortDescription: "",
+    jobType: {
+      remote: false,
+      onSite: false,
+      hybrid: true,
+    },
+  });
+  const componentSize = "default";
 
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
+  const formSubmitHandler = async (e) => {
+    try {
+      const config = { heders: { "content-type": "application/json" } };
+      let response = await axios.post(
+        "http://localhost:5000/admin/addJob",
+        {
+          formState,
+        },
+        config
+      );
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const onChangeHandler = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
   };
   return (
     <Form
@@ -30,42 +58,75 @@ const JobCreating = () => {
       }}
       layout="horizontal"
       size="large"
+      onFinish={formSubmitHandler}
     >
       <Form.Item></Form.Item>
-      <Form.Item label="Job Title">
-        <Input />
+      <Form.Item label="Job Title" required>
+        <Input name="jobTitle" onChange={onChangeHandler} />
       </Form.Item>
       <Form.Item label="Experience">
-        <Select name="experience" onChange={(e) => console.log(e.target)}>
-          <Select.Option value="0">0</Select.Option>
-          <Select.Option value="1">1</Select.Option>
-          <Select.Option value="2">2</Select.Option>
-          <Select.Option value="3">3</Select.Option>
-          <Select.Option value="4">4</Select.Option>
-        </Select>
-        <Select name="experience">
-          <Select.Option value="1">1</Select.Option>
-          <Select.Option value="2">2</Select.Option>
-          <Select.Option value="3">3</Select.Option>
-          <Select.Option value="4">4</Select.Option>
-          <Select.Option value="5">5</Select.Option>
-        </Select>
+        <InputNumber
+          name="minExp"
+          value={formState.minExp}
+          onChange={(e) =>
+            onChangeHandler({ target: { name: "minExp", value: e } })
+          }
+          placeholder="min"
+          max="5"
+          min="0"
+        />
+
+        <InputNumber
+          name="maxExp"
+          onChange={(e) =>
+            onChangeHandler({ target: { name: "maxExp", value: e } })
+          }
+          value={formState.maxExp}
+          placeholder="max"
+          min={formState.minExp + 1}
+          max="25"
+        />
       </Form.Item>
 
-      <Form.Item label="Short Discription">
-        <TextArea maxLength={50} />' '
+      <Form.Item label="Short Description">
+        <TextArea
+          name="shortDescription"
+          value={formState.shortDescription}
+          maxLength={50}
+          onChange={onChangeHandler}
+        />
+        ' '
       </Form.Item>
-      <Form.Item label="Discription">
-        <TextArea />
+      <Form.Item label="Description">
+        <TextArea onChange={onChangeHandler} name="description" />
       </Form.Item>
-      <Form.Item label="InputNumber">
-        <InputNumber />
+      <Form.Item label="Skill">
+        <Input
+          name="Skill"
+          placeholder="Required skill set"
+          onChange={onChangeHandler}
+        />
       </Form.Item>
-      <Form.Item label="Switch" valuePropName="checked">
-        <Switch />
+      <Form.Item label="Education">
+        <Input
+          placeholder="Education"
+          name="education"
+          onChange={onChangeHandler}
+        />
+      </Form.Item>
+      <Form.Item label="Job type">
+        <Checkbox name="jobType.remote" onChange={onChangeHandler}>
+          remote
+        </Checkbox>
+        <Checkbox name="jobType.onSite" onChange={onChangeHandler}>
+          on-site
+        </Checkbox>
+        <Checkbox name="jobType.hybrid" onChange={onChangeHandler}>
+          hybrid
+        </Checkbox>
       </Form.Item>
       <Form.Item label="Button">
-        <Button>Button</Button>
+        <Button htmlType="submit">Button</Button>
       </Form.Item>
     </Form>
   );
