@@ -1,4 +1,5 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const userRouter = require("./routes/user");
@@ -6,6 +7,7 @@ const adminRouter = require("./routes/admin");
 
 
 const app = express();
+dotenv.config();
 
 const db = require("./config/connection");
 
