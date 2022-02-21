@@ -1,19 +1,7 @@
 import React, { useState } from "react";
 import "./Job-creating.style.scss";
 import axios from "axios";
-import {
-  Form,
-  Input,
-  Button,
-  Radio,
-  Checkbox,
-  Select,
-  Cascader,
-  DatePicker,
-  InputNumber,
-  TreeSelect,
-  Switch,
-} from "antd";
+import { Form, Input, Button, Checkbox, InputNumber } from "antd";
 const { TextArea } = Input;
 
 const JobCreating = () => {
@@ -22,25 +10,17 @@ const JobCreating = () => {
     minExp: 0,
     maxExp: 1,
     shortDescription: "",
-    jobType: {
-      remote: false,
-      onSite: false,
-      hybrid: true,
-    },
+    remote: false,
+    onSite: false,
+    hybrid: true,
   });
   const componentSize = "default";
 
   const formSubmitHandler = async (e) => {
     try {
-      const config = { heders: { "content-type": "application/json" } };
-      let response = await axios.post(
-        "http://localhost:5000/admin/addJob",
-        {
-          formState,
-        },
-        config
-      );
-      console.log(response);
+      let response = await axios.post("http://localhost:5000/admin/addJob", {
+        ...formState,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -72,7 +52,7 @@ const JobCreating = () => {
             onChangeHandler({ target: { name: "minExp", value: e } })
           }
           placeholder="min"
-          max="5"
+          max="10"
           min="0"
         />
 
@@ -115,18 +95,39 @@ const JobCreating = () => {
         />
       </Form.Item>
       <Form.Item label="Job type">
-        <Checkbox name="jobType.remote" onChange={onChangeHandler}>
+        <Checkbox
+          name="remote"
+          onChange={(e) =>
+            onChangeHandler({
+              target: { name: e.target.name, value: e.target.checked },
+            })
+          }
+        >
           remote
         </Checkbox>
-        <Checkbox name="jobType.onSite" onChange={onChangeHandler}>
+        <Checkbox
+          name="onSite"
+          onChange={(e) =>
+            onChangeHandler({
+              target: { name: e.target.name, value: e.target.checked },
+            })
+          }
+        >
           on-site
         </Checkbox>
-        <Checkbox name="jobType.hybrid" onChange={onChangeHandler}>
+        <Checkbox
+          name="hybrid"
+          onChange={(e) =>
+            onChangeHandler({
+              target: { name: e.target.name, value: e.target.checked },
+            })
+          }
+        >
           hybrid
         </Checkbox>
       </Form.Item>
-      <Form.Item label="Button">
-        <Button htmlType="submit">Button</Button>
+      <Form.Item>
+        <Button htmlType="submit">Create</Button>
       </Form.Item>
     </Form>
   );
