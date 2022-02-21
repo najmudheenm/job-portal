@@ -3,12 +3,15 @@ const collections = require("../config/collections");
 const generateTocken = require("../tocken/generateTocken");
 const bcrypt = require("bcrypt");
 
+//This is json messages . It is helpful for to edit easly
 const messages = {
   login_passwordErr: "Password is not correct",
   login: "Login success",
   loginEmailErr: "Admin email is not correct",
   addJob:"Job added successfully",
-  addJobErr:"Something error in job posting"
+  addJobErr:"Something error in job posting",
+  successRequest:"Your request completed successfully",
+  notFound:"Not Found any data"
 };
 
 module.exports = {
@@ -41,24 +44,27 @@ module.exports = {
     }
   },
   AddJob: (req, res) => {
-      req.body.date=new Date().toISOString().slice(0,10)
-      console.log('ooooo',req.body);
-    // db.get()
-    //   .collection(collections.JOB_COLLECTION)
-    //   .insertOne(req.body)
-    //   .then(() => {
-    //     res
-    //       .status(201)
-    //       .json({
-    //         message: messages.addJob,
-    //       })
-    //       .catch(() => {
-    //         res.status(401).json({
-    //           message: messages.addJobErr,
-    //         });
-    //       });
-    //   });
+    // This function is used to create a new job post
+    db.get()
+      .collection(collections.JOB_COLLECTION)
+      .insertOne(req.body)
+      .then(() => {
+        res.status(201).json({
+          message: messages.addJob,
+        });
+      })
+      .catch(() => {
+        res.status(401).json({
+          message: messages.addJobErr,
+        });
+      });
   },
-
-
+  GetAllJobPost:(req,res)=>{
+    db.get().collection(collections.JOB_COLLECTION).find().toArray().then((response)=>{
+        res.status(200).json({
+          message:messages.successRequest,
+          response
+        })
+    })
+  }
 };
