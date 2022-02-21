@@ -1,6 +1,6 @@
 const db = require("../config/connection");
 const collections = require("../config/collections");
-const generateTocken = require("../tocken/generateTocken");
+const generateToken = require("../token/generateToken");
 const bcrypt = require("bcrypt");
 
 //This is json messages . It is helpful for to edit easly
@@ -8,10 +8,10 @@ const messages = {
   login_passwordErr: "Password is not correct",
   login: "Login success",
   loginEmailErr: "Admin email is not correct",
-  addJob:"Job added successfully",
-  addJobErr:"Something error in job posting",
-  successRequest:"Your request completed successfully",
-  notFound:"Not Found any data"
+  addJob: "Job added successfully",
+  addJobErr: "Something error in job posting",
+  successRequest: "Your request completed successfully",
+  notFound: "Not Found any data",
 };
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
           res.status(200).json({
             message: messages.login,
             email: data.email,
-            token: generateTocken(data._id),
+            token: generateToken(data._id),
           });
         })
         .catch(() => {
@@ -59,12 +59,16 @@ module.exports = {
         });
       });
   },
-  GetAllJobPost:(req,res)=>{
-    db.get().collection(collections.JOB_COLLECTION).find().toArray().then((response)=>{
+  GetAllJobPost: (req, res) => {
+    db.get()
+      .collection(collections.JOB_COLLECTION)
+      .find()
+      .toArray()
+      .then((response) => {
         res.status(200).json({
-          message:messages.successRequest,
-          response
-        })
-    })
-  }
+          message: messages.successRequest,
+          response,
+        });
+      });
+  },
 };
