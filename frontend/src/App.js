@@ -2,13 +2,13 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 
 //components
-import Header from "./components/header/Header.component";
+import Header from "./components/Header/Header.component";
 
 // pages
 import Careers from "./pages/Carrier/Career.page";
 import Home from "./pages/Home/Home.page";
 import SignIn from './pages/Sign-in/SignIn.page';
-import JobCreating from "./pages/Job-Creating/JobCreating.pages";
+import JobCreating from "./pages/Job-Create/JobCreating.pages";
 function App() {
   return (
     <div className="App">

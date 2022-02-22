@@ -1,8 +1,7 @@
-import "./card-preview.styles.scss";
+import "./CardPreview.styles.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import JobCard from "../Job-card/job-card.component";
-import ResumeUploadform from "../resume-upload-form/ResumeUploadForm.component";
+import JobCard from "../Job-Card/JobCard.component";
 
 const CardPreview = () => {
   const [jobs, setJobs] = useState(null);

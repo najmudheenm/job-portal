@@ -1,4 +1,4 @@
-import "./custom-button.component.scss";
+import "./CustomButton.component.scss";
 import React from "react";
 
 const CustomButton = ({ children, ...otherProps }) => {

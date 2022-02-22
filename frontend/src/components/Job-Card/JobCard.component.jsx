@@ -1,4 +1,4 @@
-import "./job-card.styles.scss";
+import "./JobCard.styles.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 import { Popover, Button } from "antd";
 
 //components
-import CustomButton from "../custom-button/custom-button.component";
+import CustomButton from "../Custom-Button/CustomButton.component";
 
 import { Card } from "antd";
-import ResumeUploadform from "../resume-upload-form/ResumeUploadForm.component";
+import ResumeUploadform from "../Resume-Upload-Form/ResumeUploadForm.component";
 
 const JobContainer = ({ children, ...otherprops }) => {
   const [state, setState] = useState(false);

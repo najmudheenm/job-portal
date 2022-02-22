@@ -2,8 +2,8 @@ import "./ResumeUploadForm.style.scss";
 import { useState } from "react";
 
 //components
-import CustomButton from "../custom-button/custom-button.component";
-import FormInput from "../Form-input/Form-input";
+import CustomButton from "../Custom-Button/CustomButton.component";
+import FormInput from "../Form-input/FormInput.component";
 
 const ResumeUploadform = ({ onClick }) => {
   const [formState, setFormState] = useState({
