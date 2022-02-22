@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Job-creating.style.scss";
+import "./JobCreating.style.scss";
 import axios from "axios";
 import { Form, Input, Button, Checkbox, InputNumber } from "antd";
 const { TextArea } = Input;

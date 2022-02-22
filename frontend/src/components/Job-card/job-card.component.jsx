@@ -3,39 +3,57 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
+import { Popover, Button } from "antd";
 
 //components
 import CustomButton from "../custom-button/custom-button.component";
 
+import { Card } from "antd";
+import ResumeUploadform from "../resume-upload-form/ResumeUploadForm.component";
+
 const JobContainer = ({ children, ...otherprops }) => {
+  const [state, setState] = useState(false);
   const navigate = useNavigate();
 
-  const { id = 1, title, shortDiscription, experience } = otherprops;
+  const { _id, jobTitle, shortDescription, experience } = otherprops.job;
   const user = useSelector((state) => state.user.Token);
-  const [footerToggle, setFooterToggle] = useState(false);
+  const [resumeUploadPopUp, setResumeUploadPopUp] = useState(false);
 
   //pop up resume uploading card
-  const footerToggleHandler = () => {
-    setFooterToggle(true);
+  const applyJobPopUpHeadler = () => {
+    setResumeUploadPopUp(!resumeUploadPopUp);
+  };
+
+  const hide = () => {
+    setState(false);
+  };
+
+  const handleVisibleChange = (visible) => {
+    setState(!state);
   };
 
   //navigate specific job page
   const navigateJobDetails = () => {
-    navigate(`careers/${id}`);
+    navigate(`careers/${_id}`);
   };
   return (
-    <article className="job-card">
-      <div className="header">
-        <h1>{title}</h1>
-      </div>
-      <div className="content" onClick={navigateJobDetails}>
-        <p className="short-discription">{shortDiscription}</p>
-      </div>
-      <CustomButton className="toggle-button" onClick={footerToggleHandler}>
-        Apply
-      </CustomButton>
-      <footer className="footer"></footer>
-    </article>
+    <Card
+      title={jobTitle}
+      extra={
+        <Popover
+          content={<ResumeUploadform onClick={applyJobPopUpHeadler} />}
+          title={jobTitle}
+          trigger="click"
+          visible={state}
+          onVisibleChange={handleVisibleChange}
+        >
+          <Button type="primary">{state ? "Cancel" : "Apply"}</Button>
+        </Popover>
+      }
+      style={{ width: 300 }}
+    >
+      <p>{shortDescription}</p>
+    </Card>
   );
 };
 

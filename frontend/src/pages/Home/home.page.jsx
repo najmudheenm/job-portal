@@ -1,13 +1,8 @@
-import React from "react";
+import axios from "axios";
 import JobPreview from "../../components/card-preview/card-preview.component";
 
 const Home = () => {
-  return (
-    <>
-      <a href="./pdf/test.pdf">download</a>
-      <JobPreview />
-    </>
-  );
+  return <JobPreview />;
 };
 
 export default Home;

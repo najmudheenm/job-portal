@@ -6,8 +6,8 @@ import Header from "./components/header/Header.component";
 
 // pages
 import Careers from "./pages/Carrier/Career.page";
-import Home from "./pages/Home/home.page";
-import SignIn from './pages/Sign-in/Sign-in.page';
+import Home from "./pages/Home/Home.page";
+import SignIn from './pages/Sign-in/SignIn.page';
 import JobCreating from "./pages/Job-Creating/JobCreating.pages";
 function App() {
   return (
