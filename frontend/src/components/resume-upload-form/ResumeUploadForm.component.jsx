@@ -14,7 +14,15 @@ const ResumeUploadform = ({ onClick }) => {
   });
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    //
+
+    if (
+      !formState.emailErr &&
+      !formState.fileErr &&
+      formState.email &&
+      formState.file
+    ) {
+      //axios logic to file save database
+    }
   };
 
   //form validation
@@ -62,7 +70,6 @@ const ResumeUploadform = ({ onClick }) => {
             type="file"
             name="file"
             className="file-uploader"
-            value={formState.file}
             onChange={inputChangeHandler}
           />
         </div>
@@ -91,7 +98,7 @@ const fileValidation = (data, fileType, formState) => {
   let fileExtention = data[0].name.split(".");
   console.log(fileExtention);
   let fileSize = data[0].size;
-  const file = data.result;
+  const file = data[0];
   let result;
   if (fileType.includes(fileExtention[fileExtention.length - 1])) {
     if (fileSize < 5000001) {
@@ -105,5 +112,6 @@ const fileValidation = (data, fileType, formState) => {
   } else {
     result = { ...formState, fileErr: ".pdf,.doc,.docx files only" };
   }
+  console.log(result);
   return result;
 };

@@ -1,0 +1,64 @@
+.job-card {
+  padding: 30px 16px;
+  margin:1rem;
+  background-color: white;
+  border-radius: 8px;
+  
+  transition: 0.2s;
+  .job-card-title {
+      font-weight: bold;
+    }
+    .job-card-subtitle,
+    .job-day {
+        color: #dedede;
+        color: black;
+  }
+  .detail-button {
+    background-color: #e1ebfb;
+    color: #005493;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .job-card .job-card-subtitle,
+  .job-card .job-day {
+    color: #dedede;
+  }
+  .job-card-subtitle{
+      span{
+          color:blue;
+          cursor:pointer;
+      }
+  }
+  .card-buttons {
+    margin-right: 12px;
+    color: #fff;
+  }
+
+  .card-buttons,
+  .card-buttons-msg {
+    padding: 6px;
+    width: 100%;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .search-buttons {
+    border: none;
+   
+    background-color: #005493;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 14px;
+  }
+  .detail-button {
+    background-color: #e1ebfb;
+    color: #005493;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+}

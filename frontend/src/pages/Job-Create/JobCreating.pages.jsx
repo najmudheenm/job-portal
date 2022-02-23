@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import "./JobCreating.style.scss";
 import axios from "axios";
-import { Form, Input, Button, Checkbox, InputNumber } from "antd";
+import { Form, Input, Button, Checkbox, InputNumber, Select } from "antd";
 const { TextArea } = Input;
 
 const JobCreating = () => {
   const [formState, setFormState] = useState({
     jobTitle: "",
-    minExp: 0,
-    maxExp: 1,
+    experience: "",
     shortDescription: "",
     remote: false,
     onSite: false,
@@ -45,27 +44,16 @@ const JobCreating = () => {
         <Input name="jobTitle" onChange={onChangeHandler} />
       </Form.Item>
       <Form.Item label="Experience">
-        <InputNumber
-          name="minExp"
-          value={formState.minExp}
-          onChange={(e) =>
-            onChangeHandler({ target: { name: "minExp", value: e } })
+        <Select
+          onChange={(value) =>
+            setFormState({ ...formState, experience: value })
           }
-          placeholder="min"
-          max="10"
-          min="0"
-        />
-
-        <InputNumber
-          name="maxExp"
-          onChange={(e) =>
-            onChangeHandler({ target: { name: "maxExp", value: e } })
-          }
-          value={formState.maxExp}
-          placeholder="max"
-          min={formState.minExp + 1}
-          max="25"
-        />
+        >
+          <Select.Option value="0-2">0-2</Select.Option>
+          <Select.Option value="2-5">0-5</Select.Option>
+          <Select.Option value="5-10">5-10</Select.Option>
+          <Select.Option value="10+">10+</Select.Option>
+        </Select>
       </Form.Item>
 
       <Form.Item label="Short Description">

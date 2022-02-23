@@ -11,10 +11,13 @@ const CardPreview = () => {
       .then(({ data: { response } }) => setJobs(response))
       .catch((err) => console.log(err));
   }, [setJobs]);
-  console.log(jobs);
   return (
     <div className="card-preview">
       {jobs && jobs.map((job) => <JobCard key={job._id} job={job} />)}
+      <JobCard />
+      <JobCard />
+      <JobCard />
+      <JobCard />
     </div>
   );
 };
