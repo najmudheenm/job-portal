@@ -1,4 +1,4 @@
-import "./header.styles.scss";
+import "./Header.styles.scss";
 import { Link } from "react-router-dom";
 import { Layout, Menu } from "antd";
 
