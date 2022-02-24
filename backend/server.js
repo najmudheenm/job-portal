@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const userRouter = require("./routes/user");
 const adminRouter = require("./routes/admin");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const corsOptions = {
@@ -13,17 +14,19 @@ const corsOptions = {
 };
 
 const app = express();
+
 dotenv.config();
 
 const db = require("./config/connection");
 
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 db.connect((err) => {
-  if (err) {
+  if (err) { 
     console.log("connection err", err);
   } else {
     console.log("database connected");

@@ -12,6 +12,7 @@ const messages = {
   addJobErr: "Something error in job posting",
   successRequest: "Your request completed successfully",
   notFound: "Not Found any data",
+  logout: "Logout successfull",
 };
 
 module.exports = {
@@ -26,11 +27,20 @@ module.exports = {
       bcrypt
         .compare(req.body.password, data.password)
         .then(() => {
-          res.status(200).json({
-            message: messages.login,
-            email: data.email,
-            token: generateToken(data._id),
-          });
+          const token = generateToken(data._id);
+          res
+            .status(200)
+            .cookie("Token", token, {
+              sameSite: "strict",
+              path: "/admin",
+              expires: new Date(new Date().getTime() + 60 * 60 * 24 * 1000),
+              httpOnly: true,
+            })
+            .json({
+              message: messages.login,
+              email: data.email,
+              tokenExpires: 60 * 60 * 24 * 1000,
+            });
         })
         .catch(() => {
           res.status(401).json({
@@ -45,6 +55,7 @@ module.exports = {
   },
   AddJob: (req, res) => {
     // This function is used to create a new job post
+    req.body.status = "active";
     db.get()
       .collection(collections.JOB_COLLECTION)
       .insertOne(req.body)
@@ -62,7 +73,7 @@ module.exports = {
   GetAllJobPost: (req, res) => {
     db.get()
       .collection(collections.JOB_COLLECTION)
-      .find()
+      .find({ status: "active" })
       .toArray()
       .then((response) => {
         res.status(200).json({
@@ -70,5 +81,10 @@ module.exports = {
           response,
         });
       });
+  },
+  AdminLogout: (req, res) => {
+    res.status(200).clearCookie("Token").json({
+      message: messages.logout,
+    });
   },
 };
