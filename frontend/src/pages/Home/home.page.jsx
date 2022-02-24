@@ -1,4 +1,3 @@
-import axios from "axios";
 import JobPreview from "../../components/Card-Preview/CardPreview.component";
 
 const Home = () => {
