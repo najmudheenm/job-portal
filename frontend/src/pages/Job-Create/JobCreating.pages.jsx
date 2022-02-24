@@ -7,7 +7,7 @@ const { TextArea } = Input;
 const JobCreating = () => {
   const [formState, setFormState] = useState({
     jobTitle: "",
-    experience: "",
+    experience: "0-2",
     shortDescription: "",
     remote: false,
     onSite: false,
@@ -48,9 +48,10 @@ const JobCreating = () => {
           onChange={(value) =>
             setFormState({ ...formState, experience: value })
           }
+          value={formState.experience}
         >
           <Select.Option value="0-2">0-2</Select.Option>
-          <Select.Option value="2-5">0-5</Select.Option>
+          <Select.Option value="2-5">2-5</Select.Option>
           <Select.Option value="5-10">5-10</Select.Option>
           <Select.Option value="10+">10+</Select.Option>
         </Select>
@@ -60,17 +61,27 @@ const JobCreating = () => {
         <TextArea
           name="shortDescription"
           value={formState.shortDescription}
-          maxLength={50}
+          maxLength={100}
           onChange={onChangeHandler}
         />
-        ' '
       </Form.Item>
+
+      <Form.Item label="Job Type">
+        <Select
+          onChange={(value) => setFormState({ ...formState, jobType: value })}
+        >
+          <Select.Option value="Full-time">Full-time</Select.Option>
+          <Select.Option value="Part-time">Part-time</Select.Option>
+          <Select.Option value="Inter">Intern</Select.Option>
+        </Select>
+      </Form.Item>
+
       <Form.Item label="Description">
         <TextArea onChange={onChangeHandler} name="description" />
       </Form.Item>
       <Form.Item label="Skill">
         <Input
-          name="Skill"
+          name="skills"
           placeholder="Required skill set"
           onChange={onChangeHandler}
         />
@@ -82,7 +93,7 @@ const JobCreating = () => {
           onChange={onChangeHandler}
         />
       </Form.Item>
-      <Form.Item label="Job type">
+      <Form.Item label="Location">
         <Checkbox
           name="remote"
           onChange={(e) =>

@@ -1,6 +1,11 @@
 import axios from 'axios'
 
-export const loadJobs = () => async (dispatch) =>{
-    const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/admin/joblist`)
-    return response
+export const fetchJobData = (data) => async (dispatch) =>{
+    console.log("hi");
+    const res= await axios.get(`${process.env.REACT_APP_BASE_URL}admin/joblist`)
+    dispatch({
+        type:"FETCH_JOBS",
+        payload:res.data.response 
+    })
+
 }

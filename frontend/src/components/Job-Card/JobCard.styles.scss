@@ -3,7 +3,7 @@
   margin:1rem;
   background-color: white;
   border-radius: 8px;
-  
+  width: 26rem;
   transition: 0.2s;
   .job-card-title {
       font-weight: bold;
@@ -30,6 +30,7 @@
           color:blue;
           cursor:pointer;
       }
+      
   }
   .card-buttons {
     margin-right: 12px;
@@ -45,13 +46,16 @@
   }
   .search-buttons {
     border: none;
-   
+   margin-right: 0.4rem;
     background-color: #005493;
     padding: 8px 10px;
     border-radius: 6px;
     font-size: 13px;
     font-weight: 600;
     margin-top: 14px;
+    span{
+        width:.2rem
+    }
   }
   .detail-button {
     background-color: #e1ebfb;
@@ -61,4 +65,11 @@
     padding: 2px 8px;
     border-radius: 4px;
 }
+}
+
+#root > div > div > div > div:nth-child(4) > button:nth-child(3) > span{
+    padding-right: 1rem;
+    svg{
+        width:1rem
+    }
 }
