@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import "./JobCreating.style.scss";
 import axios from "axios";
-import { Form, Input, Button, Checkbox, InputNumber } from "antd";
+import { Form, Input, Button, Checkbox, InputNumber, Select } from "antd";
 const { TextArea } = Input;
 
 const JobCreating = () => {
   const [formState, setFormState] = useState({
     jobTitle: "",
-    minExp: 0,
-    maxExp: 1,
+    experience: "0-2",
     shortDescription: "",
     remote: false,
     onSite: false,
@@ -45,44 +44,44 @@ const JobCreating = () => {
         <Input name="jobTitle" onChange={onChangeHandler} />
       </Form.Item>
       <Form.Item label="Experience">
-        <InputNumber
-          name="minExp"
-          value={formState.minExp}
-          onChange={(e) =>
-            onChangeHandler({ target: { name: "minExp", value: e } })
+        <Select
+          onChange={(value) =>
+            setFormState({ ...formState, experience: value })
           }
-          placeholder="min"
-          max="10"
-          min="0"
-        />
-
-        <InputNumber
-          name="maxExp"
-          onChange={(e) =>
-            onChangeHandler({ target: { name: "maxExp", value: e } })
-          }
-          value={formState.maxExp}
-          placeholder="max"
-          min={formState.minExp + 1}
-          max="25"
-        />
+          value={formState.experience}
+        >
+          <Select.Option value="0-2">0-2</Select.Option>
+          <Select.Option value="2-5">2-5</Select.Option>
+          <Select.Option value="5-10">5-10</Select.Option>
+          <Select.Option value="10+">10+</Select.Option>
+        </Select>
       </Form.Item>
 
       <Form.Item label="Short Description">
         <TextArea
           name="shortDescription"
           value={formState.shortDescription}
-          maxLength={50}
+          maxLength={100}
           onChange={onChangeHandler}
         />
-        ' '
       </Form.Item>
+
+      <Form.Item label="Job Type">
+        <Select
+          onChange={(value) => setFormState({ ...formState, jobType: value })}
+        >
+          <Select.Option value="Full-time">Full-time</Select.Option>
+          <Select.Option value="Part-time">Part-time</Select.Option>
+          <Select.Option value="Inter">Intern</Select.Option>
+        </Select>
+      </Form.Item>
+
       <Form.Item label="Description">
         <TextArea onChange={onChangeHandler} name="description" />
       </Form.Item>
       <Form.Item label="Skill">
         <Input
-          name="Skill"
+          name="skills"
           placeholder="Required skill set"
           onChange={onChangeHandler}
         />
@@ -94,7 +93,7 @@ const JobCreating = () => {
           onChange={onChangeHandler}
         />
       </Form.Item>
-      <Form.Item label="Job type">
+      <Form.Item label="Location">
         <Checkbox
           name="remote"
           onChange={(e) =>

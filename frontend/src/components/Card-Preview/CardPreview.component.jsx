@@ -1,20 +1,21 @@
 import "./CardPreview.styles.scss";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import JobCard from "../Job-Card/JobCard.component";
 
+import { fetchJobData } from "../../redux/jobs/jobsAction";
+
 const CardPreview = () => {
-  const [jobs, setJobs] = useState(null);
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/admin/joblist")
-      .then(({ data: { response } }) => setJobs(response))
-      .catch((err) => console.log(err));
-  }, [setJobs]);
+  const jobs = useSelector((state) => state.jobs.jobs);
   console.log(jobs);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchJobData(12));
+  }, [dispatch]);
   return (
     <div className="card-preview">
-      {jobs && jobs.map((job) => <JobCard key={job._id} job={job} />)}
+      {jobs.length && jobs.map((job) => <JobCard key={job._id} job={job} />)}
     </div>
   );
 };

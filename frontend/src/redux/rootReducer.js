@@ -3,10 +3,12 @@ import {combineReducers} from 'redux'
 
 //reducer
 import adminReducer from './admin/adminReducer'
+import jobsReducer from './jobs/jobsReducer'
 
 
 const rootReducer = combineReducers({
-   user:adminReducer
+   user:adminReducer,
+   jobs:jobsReducer,
 })
 
 export default rootReducer
