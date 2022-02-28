@@ -6,13 +6,13 @@ const userRouter = require("./routes/user");
 const adminRouter = require("./routes/admin");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 
 const corsOptions = {
   origin: "http://localhost:3000",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
-
 const app = express();
 
 dotenv.config();
@@ -24,9 +24,10 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(fileUpload());
 
 db.connect((err) => {
-  if (err) { 
+  if (err) {
     console.log("connection err", err);
   } else {
     console.log("database connected");
@@ -35,6 +36,16 @@ db.connect((err) => {
 
 app.use("/", userRouter);
 app.use("/admin", adminRouter);
+
+// error handler
+app.use(function (err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+});
 
 app.listen(5000, console.log("server started"));
 

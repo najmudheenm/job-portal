@@ -2,6 +2,7 @@ const db = require("../config/connection");
 const collections = require("../config/collections");
 const generateToken = require("../token/generateToken");
 const bcrypt = require("bcrypt");
+const objectId = require("mongodb").ObjectId;
 
 //This is json messages . It is helpful for to edit easly
 const messages = {
@@ -17,8 +18,6 @@ const messages = {
 
 module.exports = {
   AdminLogin: async (req, res) => {
-    req.body.password = await bcrypt.hash(req.body.password, 10);
-
     const data = await db
       .get()
       .collection(collections.ADMIN_COLLECTION)
@@ -28,18 +27,21 @@ module.exports = {
         .compare(req.body.password, data.password)
         .then(() => {
           const token = generateToken(data._id);
+          const expireDate = new Date(
+            new Date().getTime() + 60 * 60 * 24 * 1000
+          );
           res
             .status(200)
             .cookie("Token", token, {
               sameSite: "strict",
               path: "/admin",
-              expires: new Date(new Date().getTime() + 60 * 60 * 24 * 1000),
+              expires: expireDate,
               httpOnly: true,
             })
             .json({
               message: messages.login,
               email: data.email,
-              tokenExpires: 60 * 60 * 24 * 1000,
+              tokenExpires: expireDate,
             });
         })
         .catch(() => {
@@ -86,5 +88,62 @@ module.exports = {
     res.status(200).clearCookie("Token").json({
       message: messages.logout,
     });
+  },
+  DeleteJob: (req, res) => {
+    db.get()
+      .collection(collections.JOB_COLLECTION)
+      .updateOne(
+        { _id: objectId(req.query.id) },
+        { $set: { status: "inactive" } }
+      )
+      .then(() => {
+        res.status(200).json({
+          message: messages.successRequest,
+        });
+      });
+  },
+  GetJobwiseAppliedDetails: (req, res) => {
+    const jobId = req.query.jobId;
+    db.get()
+      .collection(collections.APPLY_JOB_COLLECTIONS)
+      .findMany({ jobId: jobId })
+      .toArray()
+      .then((response) => {
+        res.status(200).json({
+          message: messages.successRequest,
+          data: response,
+        });
+      })
+      .catch((err) => {
+        res.status(401).json({
+          message: messages.notFound,
+          err,
+        });
+      });
+  },
+  UpdateApplyStatus: (req, res) => {
+    db.get()
+      .collection(collections.APPLY_JOB_COLLECTIONS)
+      .updateOne(
+        { jobId: req.body.jobId, email: req.body.email },
+        { $set: { applyStatus: req.body.applyStatus } }
+      )
+      .then((response) => {
+        if (response.matchedCount === 1) {
+          res.status(200).json({
+            message: messages.successRequest,
+          });
+        } else {
+          res.status(401).json({
+            message: messages.notFound,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(401).json({
+          message: messages.notFound,
+          err
+        });
+      });
   },
 };
