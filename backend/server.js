@@ -47,6 +47,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
 });
 
-app.listen(5000, console.log("server started"));
+app.listen(3002, console.log("server started"));
 
 module.exports = app;
