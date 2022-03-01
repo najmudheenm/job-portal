@@ -1,5 +1,6 @@
-
-body{
-    background-color: #f7f9fb ;
-
+#root{
+    background-color: #f7f9fb;
+    box-sizing: border-box;
+    margin: 0 ;
+    padding: 0;
 }
