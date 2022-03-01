@@ -6,19 +6,27 @@ const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.Token;
-  var decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
-  db.get()
-    .collection(collections.ADMIN_COLLECTION)
-    .findOne({ email: decoded.email })
-    .then((response) => {
-      if (response) {
-        next();
-      } else {
-        res.status(401).json({
-          message: "Your login session is expired",
-        });
-      }
-    });
+  if(!token){
+    res.status(401).json({
+      message:"User not logged"
+    })
+  }else{
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+    db.get()
+      .collection(collections.ADMIN_COLLECTION)
+      .findOne({ email: decoded.email })
+      .then((response) => {
+        if (response) {
+          next();
+        } else {
+          res.status(401).json({
+            message: "Your login session is expired",
+          });
+        }
+      });
+  }
+ 
+
 };
 
 const router = express.Router();

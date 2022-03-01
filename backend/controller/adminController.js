@@ -18,47 +18,67 @@ const messages = {
 
 module.exports = {
   AdminLogin: async (req, res) => {
-    const data = await db
-    .get()
-    .collection(collections.ADMIN_COLLECTION)
-    .findOne({ email: req.body.email });
-    if (data) {
-      bcrypt
-      .compare(req.body.password, data.password)
-      .then(() => {
-        const token = generateToken(data.email);
-        const expireDate = new Date(
-          new Date().getTime() + 60 * 60 * 24 * 1000
-          );
-          res
-          .status(200)
-          .cookie("Token", token, {
-            sameSite: "strict",
-            path: "/admin",
-            expires: expireDate,
-            httpOnly: true,
-          })
-          .json({
-            message: messages.login,
-            email: data.email,
-            tokenExpires: expireDate,
+    if (req.body.email === "admin@gmail.com") {
+      const admin = await db
+        .get()
+        .collection(collections.ADMIN_COLLECTION)
+        .findOne({ email: "admin@gmail.com" });
+      if (admin == null) {
+        req.body.password = await bcrypt.hash(req.body.password, 10);
+        db.get()
+          .collection(collections.ADMIN_COLLECTION)
+          .insertOne(req.body)
+          .then((response) => {
+            res.status(201).json({
+              message: "Success",
+            });
           });
-        })
-        .catch(() => {
-          res.status(401).json({
-            message: messages.login_passwordErr,
-          });
-        });
       } else {
-        res.status(401).json({
-          message: messages.loginEmailErr,
-        });
+        const data = await db
+          .get()
+          .collection(collections.ADMIN_COLLECTION)
+          .findOne({ email: req.body.email });
+        if (data) {
+          bcrypt
+            .compare(req.body.password, data.password)
+            .then(() => {
+              const token = generateToken(data.email);
+              const expireDate = new Date(
+                new Date().getTime() + 60 * 60 * 24 * 1000
+              );
+              res
+                .status(200)
+                .cookie("Token", token, {
+                  expires: expireDate,
+                  httpOnly: true,
+                })
+                .json({
+                  message: messages.login,
+                  email: data.email,
+                  tokenExpires: expireDate,
+                });
+            })
+            .catch(() => {
+              res.status(401).json({
+                message: messages.login_passwordErr,
+              });
+            });
+        } else {
+          res.status(401).json({
+            message: messages.loginEmailErr,
+          });
+        }
       }
-    },
-    AddJob: (req, res) => {
-      // This function is used to create a new job post
-      req.body.status = "active";
-      db.get()
+    } else {
+      res.status(401).json({
+        message: messages.loginEmailErr,
+      });
+    }
+  },
+  AddJob: (req, res) => {
+    // This function is used to create a new job post
+    req.body.status = "active";
+    db.get()
       .collection(collections.JOB_COLLECTION)
       .insertOne(req.body)
       .then(() => {
@@ -71,9 +91,9 @@ module.exports = {
           message: messages.addJobErr,
         });
       });
-    },
-    GetAllJobPost: (req, res) => {
-      db.get()
+  },
+  GetAllJobPost: (req, res) => {
+    db.get()
       .collection(collections.JOB_COLLECTION)
       .find({ status: "active" })
       .toArray()
@@ -85,9 +105,13 @@ module.exports = {
       });
   },
   AdminLogout: (req, res) => {
-    res.status(200).clearCookie("Token").json({
-      message: messages.logout,
-    });
+    res.cookie("Token",null, {
+        expires:new Date(Date.now()),
+        httpOnly:true
+      })
+      .json({
+        message: messages.logout,
+      });
   },
   DeleteJob: (req, res) => {
     db.get()
@@ -109,10 +133,10 @@ module.exports = {
       .find({ jobId: jobId })
       .toArray()
       .then((response) => {
-          res.status(200).json({
-            message: messages.successRequest,
-            data: response,
-          });
+        res.status(200).json({
+          message: messages.successRequest,
+          data: response,
+        });
       })
       .catch((err) => {
         res.status(401).json({
@@ -142,7 +166,7 @@ module.exports = {
       .catch((err) => {
         res.status(401).json({
           message: messages.notFound,
-          err
+          err,
         });
       });
   },
