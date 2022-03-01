@@ -2,17 +2,19 @@
   padding: 30px 16px;
   margin:1rem;
   background-color: white;
+  height: 15rem;
   border-radius: 8px;
   width: 26rem;
   transition: 0.2s;
+  position: relative;
+
   .job-card-title {
       font-weight: bold;
     }
-    .job-card-subtitle,
-    .job-day {
-        color: #dedede;
-        color: black;
-  }
+  .job-card-subtitle {  
+      color: #dedede;
+      color: black;
+    }
   .detail-button {
     background-color: #e1ebfb;
     color: #005493;
@@ -35,6 +37,10 @@
   .card-buttons {
     margin-right: 12px;
     color: #fff;
+    display: inline;
+    position: absolute;
+    bottom: 0;
+    left: 0;
   }
 
   .card-buttons,
@@ -52,7 +58,7 @@
     border-radius: 6px;
     font-size: 13px;
     font-weight: 600;
-    margin-top: 14px;
+    margin-top: 14px
     span{
         width:.2rem
     }

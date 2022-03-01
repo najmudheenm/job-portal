@@ -10,21 +10,19 @@ import { Popover, Button } from "antd";
 import CustomButton from "../Custom-Button/CustomButton.component";
 
 import { Card } from "antd";
-import ResumeUploadform from "../Resume-Upload-Form/ResumeUploadForm.component";
+import ResumeUploadform from "../resume-upload-form/ResumeUploadForm.component";
 
 const JobContainer = ({ children, ...otherprops }) => {
-  const [state, setState] = useState(false);
+  const [popUp, setPopUp] = useState(false)
   const navigate = useNavigate();
-
+console.log(otherprops);
   const [resumeUploadPopUp, setResumeUploadPopUp] = useState(false);
 
   // //pop up resume uploading card
-  const applyJobPopUpHeadler = () => {
-    setResumeUploadPopUp(!resumeUploadPopUp);
-  };
+
 
   const handleVisibleChange = () => {
-    setState(!state);
+  setPopUp(!popUp);
   };
 
   //navigate specific job page
@@ -38,12 +36,10 @@ const JobContainer = ({ children, ...otherprops }) => {
     _id,
     jobTitle,
     shortDescription,
-    skills,
+    skill,
     experience,
-    jobType,
-    remote,
-    onSite,
-    hybrid,
+    type,
+    workLocation,
   } = otherprops.job;
   console.log(otherprops);
   return (
@@ -59,33 +55,31 @@ const JobContainer = ({ children, ...otherprops }) => {
           Exp : {experience}
         </button>
         <button className="search-buttons detail-button">
-          Job Type : {jobType}
+          Job Type : {type}
         </button>
         <button className="search-buttons detail-button">
           <span>
             <Logo />
           </span>
-          {hybrid && "Hybrid, "}
-          {onSite && "On-site "}
-          {hybrid && "Hybrid "}
+          {workLocation}
         </button>
       </div>
       <div className="job-detail-buttons">
         <button className="search-buttons detail-button">
-          Skills : {skills}
+          Skills : {skill}
         </button>
       </div>
 
       <Popover
-        content={<ResumeUploadform onClick={applyJobPopUpHeadler} />}
-        title="test"
+        content={<ResumeUploadform onClick={handleVisibleChange} />}
+        title={jobTitle}
         trigger="click"
-        visible={state}
+        visible={popUp}
         onVisibleChange={handleVisibleChange}
       >
         <div className="job-card-buttons">
           <button className="search-buttons card-buttons">
-            {state ? "Cancel" : "Apply"}
+            {popUp ? "Cancel" : "Apply"}
           </button>
         </div>
       </Popover>

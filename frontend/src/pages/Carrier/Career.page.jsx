@@ -1,6 +1,6 @@
 import "./Career.styles.scss";
 import React from "react";
-import Resume from "../../components/Resume-Upload-Form/ResumeUploadForm.component";
+import Resume from "../../components/resume-upload-form/ResumeUploadForm.component";
 
 const Career = () => {
   return (

@@ -15,13 +15,16 @@ const SignInPage = ({ URL }) => {
 
   const signInSubmitHandler = async (e) => {
     e.preventDefault();
-    const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}admin/login`,
-      {
-        userData,
-      }
-    );
-    console.log(response);
+    try{
+      const response = await axios.post(`${process.env.REACT_APP_LOGIN_URL}`,
+        {
+          ...userData,
+        }
+        );
+        console.log(response);
+    }catch(err){
+      console.log(err);
+    }
   };
   return (
     <div className="sign-page">

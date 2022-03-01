@@ -1,117 +1,110 @@
-import "./ResumeUploadForm.style.scss";
-import { useState } from "react";
+import {useState} from "react";
 
-//components
-import CustomButton from "../Custom-Button/CustomButton.component";
-import FormInput from "../Form-input/FormInput.component";
+//antd
+import { Upload, message, Form, Input, Button } from "antd";
+import { LoadingOutlined, PlusOutlined,FileDoneOutlined } from "@ant-design/icons";
 
-const ResumeUploadform = ({ onClick }) => {
-  const [formState, setFormState] = useState({
-    email: "",
-    file: "",
-    fileErr: "",
-    emailErr: "",
-  });
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
+//import components
 
-    if (
-      !formState.emailErr &&
-      !formState.fileErr &&
-      formState.email &&
-      formState.file
-    ) {
-      //axios logic to file save database
-    }
-  };
+const getBase64=(img, callback)=> {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 
-  //form validation
-  const inputChangeHandler = (e) => {
-    let response;
-    switch (e.target.name) {
-      case "file": {
-        const fileType = ["pdf", "doc", "docx"];
-        response = fileValidation(e.target.files, fileType, formState);
-        break;
-      }
-      case "email": {
-        response = emailValidation(e.target.value, formState);
-        break;
-      }
-      default:
-    }
-    setFormState(response);
-  };
-  return (
-    <div className="job-card-container">
-      <form className="resume-upload-form" onSubmit={onSubmitHandler}>
-        <div className="email-container">
-          {formState.emailErr.length ? (
-            <span className="err-message">{formState.emailErr}</span>
-          ) : (
-            ""
-          )}
-
-          <FormInput
-            type="email"
-            name="email"
-            label="Email"
-            value={formState.email}
-            onChange={inputChangeHandler}
-          />
-        </div>
-        <div className="file-container">
-          {formState.fileErr.length ? (
-            <span className="err-message">{formState.fileErr}</span>
-          ) : (
-            ""
-          )}
-          <FormInput
-            type="file"
-            name="file"
-            className="file-uploader"
-            onChange={inputChangeHandler}
-          />
-        </div>
-        <div className="submit">
-          <CustomButton type="submit">Apply</CustomButton>
-        </div>
-      </form>
-    </div>
-  );
-};
-export default ResumeUploadform;
-
-//email validator
-const emailValidation = (email, formState) => {
-  let result;
-  if (email.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i)) {
-    result = { ...formState, email, emailErr: "" };
-  } else {
-    result = { ...formState, email: email, emailErr: "email not valid" };
+function beforeUpload(file) {
+file.name="najmu"
+  console.log(file.type);
+  const fileType = ["application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document","image/jpeg"
+  ];
+  const fileTypeValid = fileType.includes(file.type);
+  if (!fileTypeValid) {
+    message.error("You can only upload pdf/doc/docx file!");
   }
-  return result;
-};
-//file validation
-const fileValidation = (data, fileType, formState) => {
-  console.log(data);
-  let fileExtention = data[0].name.split(".");
-  console.log(fileExtention);
-  let fileSize = data[0].size;
-  const file = data[0];
-  let result;
-  if (fileType.includes(fileExtention[fileExtention.length - 1])) {
-    if (fileSize < 5000001) {
-      result = { ...formState, file, fileErr: "" };
-    } else {
-      result = {
-        ...formState,
-        fileErr: "File too large file only accept under 5 MB",
-      };
-    }
-  } else {
-    result = { ...formState, fileErr: ".pdf,.doc,.docx files only" };
+  const isLt2M = file.size / 1024 / 1024 < 5;
+  if (!isLt2M) {
+    message.error("Image must smaller than 5MB!");
   }
-  console.log(result);
-  return result;
-};
+  return fileTypeValid && isLt2M;
+}
+const Avatar =(props)=> {
+
+  
+  const [loading, setLoading] = useState(false)
+  const [imageUrl, setImageUrl] = useState('')
+
+ const  handleChange = (info) => {
+   console.log(info);
+  getBase64(info.file.originFileObj, (imageUrl) =>{
+    setLoading( false )
+    setImageUrl(imageUrl)
+  })
+    if (info.file.status === "uploading") {
+      setLoading( true );
+      return;
+    }
+    if (info.file.status === "done") {
+      // Get url from response in real world.
+      getBase64(info.file.originFileObj, (imageUrl) =>{
+        setLoading( false )
+        setImageUrl(imageUrl)
+      })
+    }
+  }
+  
+
+  
+    const uploadButton = (
+      <div>
+        {loading ? <LoadingOutlined /> : <PlusOutlined />}
+        <div style={{ marginTop: 8 }}>Upload</div>
+      </div>)
+      const fileDoneButton = (
+        <div>
+        <FileDoneOutlined />
+        <div style={{ marginTop: 8 }}>Done</div>
+      </div>
+      )
+    return (<>
+     <Upload
+        name="uploadFile"
+        listType="picture-card"
+        className="avatar-uploader"
+        showUploadList={false}
+        action="http://www.csm-testcenter.org/test"
+        beforeUpload={beforeUpload}
+        onChange={handleChange}
+      >
+        {imageUrl ? (
+          fileDoneButton
+        ) : (
+          uploadButton
+        )}
+      </Upload>
+      <Form>
+        <Form.Item name='email' label='Email' rules={[
+              {
+                required:true,
+                message: "Enter a valid email address!",
+              },
+              {type: "email"}
+            ]} hasFeedback>
+        
+         
+            <Input className="form-control" type="text" placeholder="Email" />
+    
+        </Form.Item>
+        <Form.Item>
+          <Button  type="primary" loading={loading} onClick={props.onClick} htmlType="submit">Apply</Button>
+        </Form.Item>
+      
+      </Form>
+       
+      </>
+    );
+  }
+
+
+export default Avatar;
