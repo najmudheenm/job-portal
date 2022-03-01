@@ -25,7 +25,7 @@ const router = express.Router();
 
 router.post("/login", adminController.AdminLogin);
 router.post("/addJob", verifyToken, adminController.AddJob);
-router.get("/jobList", verifyToken, adminController.GetAllJobPost);
+router.get("/jobList", adminController.GetAllJobPost);
 router.get("/logout", adminController.AdminLogout);
 router.patch("/deleteJob", verifyToken, adminController.DeleteJob);
 router.get("/appliedJob",  verifyToken,  adminController.GetJobwiseAppliedDetails);
