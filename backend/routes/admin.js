@@ -36,7 +36,7 @@ router.post("/addJob", verifyToken, adminController.AddJob);
 router.get("/jobList", adminController.GetAllJobPost);
 router.get("/logout", adminController.AdminLogout);
 router.patch("/deleteJob", verifyToken, adminController.DeleteJob);
-router.get("/appliedJob",  verifyToken,  adminController.GetJobwiseAppliedDetails);
+router.get("/appliedJob",  adminController.GetJobwiseAppliedDetails);
 router.patch("/updateapplyStatus",  verifyToken,  adminController.UpdateApplyStatus);
 
 module.exports = router;

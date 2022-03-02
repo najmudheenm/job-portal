@@ -48,7 +48,8 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
 });
+const port = process.env.BACK_END_PORT
 
-app.listen(3002, console.log("server started"));
+app.listen(port, console.log("server started"));
 
 module.exports = app;

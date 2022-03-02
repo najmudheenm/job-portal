@@ -6,7 +6,8 @@ const messages = {
   applyjob: "Job applied successfully",
   applyjobErr: "Somthing error in job applying",
   AlreadyApplied: "You already applied this job",
-  upload:"Upload successfull"
+  upload:"Upload successfull",
+  successRequest:"Your request is successfull"
 };
 
 module.exports = {
@@ -44,13 +45,31 @@ module.exports = {
     if (file) {
       file.mv("./File_Uploads/" + file.size + file.name);
       res.status(200).json({
-        message:messages.upload
-      })
+        message: messages.upload,
+      });
     }
   },
-  UserWiseAppliedDetails:(req,res)=>{
-    const userEmail = req.query.email
-    const jobId = req.query.jobId
-    
-  }
+  UserWiseAppliedDetails: (req, res) => {
+    const userEmail = req.query.email;
+    db.get()
+      .collection(collections.APPLY_JOB_COLLECTIONS)
+      .aggregate([
+        {
+          $match: { email: userEmail },
+        },
+        {
+          $project: {
+            _id: 0,
+            jobId: 1
+          },
+        },
+      ])
+      .toArray()
+      .then((response) => {
+        res.status(200).json({
+          message: messages.successRequest,
+          response,
+        });
+      });
+  },
 };
