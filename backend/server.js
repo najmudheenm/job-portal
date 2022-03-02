@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const userRouter = require("./routes/user");
 const adminRouter = require("./routes/admin");
+const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
@@ -24,6 +25,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "File_Uploads")));
 app.use(fileUpload());
 
 db.connect((err) => {
