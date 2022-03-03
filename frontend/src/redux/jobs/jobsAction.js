@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const fetchJobData = (data) => async (dispatch) =>{
+export const fetchJobData = () => async (dispatch) =>{
     console.log("hi");
     const res= await axios.get(`${process.env.REACT_APP_BASE_URL}admin/joblist`)
     dispatch({
@@ -8,4 +8,5 @@ export const fetchJobData = (data) => async (dispatch) =>{
         payload:res.data.response 
     })
 
-}
+}   
+

@@ -18,16 +18,17 @@ import Home from "./pages/Home/home.page";
 import SignIn from './pages/Sign-in/SignIn.page';
 import JobCreating from "./pages/Job-Create/JobCreating.pages";
 import JobDetails from "./pages/JobDetails/JobDetails.page";
-
-//testing job creation
-import TestCreateJob from "./pages/Job-Create-2/JobCreate.page"
+import Admin from "./pages/Admin/Admin.page"
 
 function App() {
   const dispatch =useDispatch()
 
   // useEffect(() => {
   //   dispatch(fetchJobData)
-  // }, [])
+  // }, [dispatch])
+  useEffect(() => {
+    dispatch(fetchJobData());
+  }, [dispatch]);
   
   return (
     <div className="App">
@@ -35,7 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path ="/:id" element={<JobDetails/>}/>
-        <Route path="career" element={<TestCreateJob/>} />
+        <Route path="/admin/:id" element={<Admin />} />
         <Route path="/login" element={<SignIn />} />
         <Route path="/jobcreate" element={<JobCreating/>} />
       </Routes>

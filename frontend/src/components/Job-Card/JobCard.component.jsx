@@ -25,6 +25,8 @@ console.log(otherprops);
   setPopUp(!popUp);
   };
 
+  
+
   //navigate specific job page
   const navigateJobDetails = () => {
     navigate(_id, {
@@ -71,7 +73,7 @@ console.log(otherprops);
       </div>
 
       <Popover
-        content={<ResumeUploadform onClick={handleVisibleChange} />}
+        content={<ResumeUploadform onClick={handleVisibleChange}  jobId={_id}/>}
         title={jobTitle}
         trigger="click"
         visible={popUp}

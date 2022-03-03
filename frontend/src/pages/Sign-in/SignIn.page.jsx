@@ -7,7 +7,9 @@ import FormInput from "../../components/Form-input/FormInput.component";
 import CustomButton from "../../components/Custom-Button/CustomButton.component";
 
 const SignInPage = ({ URL }) => {
+  
   const [userData, setUserData] = useState([]);
+
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
@@ -19,7 +21,8 @@ const SignInPage = ({ URL }) => {
       const response = await axios.post(`${process.env.REACT_APP_LOGIN_URL}`,
         {
           ...userData,
-        }
+        },
+        {withCredentials:true}
         );
         console.log(response);
     }catch(err){

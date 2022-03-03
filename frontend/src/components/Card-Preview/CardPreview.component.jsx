@@ -8,11 +8,13 @@ import { fetchJobData } from "../../redux/jobs/jobsAction";
 
 const CardPreview = () => {
   const jobs = useSelector((state) => state.jobs.jobs);
-  console.log(jobs);
+
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(fetchJobData(12));
+    dispatch(fetchJobData());
   }, [dispatch]);
+
   return (
     <div className="card-preview">
       {jobs.length && jobs.map((job) => <JobCard key={job._id} job={job} />)}

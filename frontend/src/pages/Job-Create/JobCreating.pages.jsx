@@ -45,7 +45,8 @@
           `${process.env.REACT_APP_JOB_CREATE_URL}`,
           {
             ...jobPost
-          }
+          },
+          { withCredentials:true}
         );
         console.log(response);
         if (response.status==201) {
@@ -160,7 +161,7 @@
         </Form.Item>
 
         <Form.Item label="Short Description" name ="shortDescription">
-          <TextArea name="shortDescription" maxLength={100} />
+          <TextArea name="shortDescription"minLength={50} maxLength={200} />
         </Form.Item>
 
         <Form.Item label="Job Type" name="jobType">

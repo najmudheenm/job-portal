@@ -9,19 +9,23 @@ import DescriptionWithList from "../../components/Discription-With-List/Descript
 
 const JobDetails = () => {
   const { id } = useParams();
-  const { state } = useLocation();
-  const [data, setData] = useState(state || {});
-  const jobs = useSelector((state) => state);
-  console.log(jobs);
+  const {state} = useLocation();
+ 
+  const [data, setData] = useState(state? state.job :null);
+  const jobs = useSelector((state) => state.jobs.jobs);
 
   useEffect(() => {
-    if (!state && jobs) {
+    console.log(jobs);
+    if (jobs.length  ) {
       console.log(id);
       const job = jobs.filter((job) => job._id == id);
-      setData(job);
+      setData(job[0]);
     }
     console.log("state", data);
   }, [jobs, data]);
+  if (data==null){
+    return null
+  }
   const {
     workLocation,
     skillExp,
@@ -35,8 +39,9 @@ const JobDetails = () => {
     skill,
     jobTitle,
     jobDescription,
-  } = state.job;
-  const jobdisc=jobDescription.filter(jobdisc=>jobdisc !="\n");
+  } = data;
+  console.log(jobDescription);
+  const jobdisc=jobDescription.filter(jobdisc=>jobdisc.trim() !==("\n"&&""));
   console.log(jobdisc);
   return (
     <div className="job-details container-flued">
