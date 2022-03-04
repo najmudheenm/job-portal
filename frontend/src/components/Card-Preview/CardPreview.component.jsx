@@ -1,7 +1,6 @@
 import "./CardPreview.styles.scss";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import JobCard from "../Job-Card/JobCard.component";
 
 import { fetchJobData } from "../../redux/jobs/jobsAction";

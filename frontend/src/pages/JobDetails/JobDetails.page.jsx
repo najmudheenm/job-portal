@@ -10,11 +10,12 @@ import DescriptionWithList from "../../components/Discription-With-List/Descript
 const JobDetails = () => {
   const { id } = useParams();
   const {state} = useLocation();
- 
+  
   const [data, setData] = useState(state? state.job :null);
   const jobs = useSelector((state) => state.jobs.jobs);
-
+  
   useEffect(() => {
+ 
     console.log(jobs);
     if (jobs.length  ) {
       console.log(id);
@@ -42,6 +43,7 @@ const JobDetails = () => {
   } = data;
   console.log(jobDescription);
   const jobdisc=jobDescription.filter(jobdisc=>jobdisc.trim() !==("\n"&&""));
+  const skillExpData=skillExp.filter(jobdisc=>jobdisc.trim() !==("\n"&&""));
   console.log(jobdisc);
   return (
     <div className="job-details container-flued">
@@ -106,7 +108,7 @@ const JobDetails = () => {
                   />
                   <DescriptionWithList
                     title="Your Skill and Experience"
-                    data={skillExp}
+                    data={skillExpData}
                   />
                 </div>
                 <JobApplyPopover jobTitle={jobTitle} Button={ <div className="job-apply">

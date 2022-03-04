@@ -1,10 +1,21 @@
   import React, { useState } from "react";
+  import {useNavigate}from 'react-router-dom'
+  import {useEffect} from 'react'
+import {useSelector} from 'react-redux'
   import "./JobCreating.style.scss";
   import axios from "axios";
   import { Form, Input, Button, Checkbox, Select, DatePicker,message,Alert } from "antd";
   const { TextArea } = Input;
 
+
   const JobCreating = () => {
+    const navigate=useNavigate()
+    const user =useSelector(user=>user.admin)
+    useEffect(() => {
+        if(!user.email.length){
+          navigate("/login")
+        }
+      },[user])
     const [formState, setFormState] = useState({
       jobTitle:"",
       description: "",

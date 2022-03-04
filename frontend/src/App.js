@@ -38,7 +38,7 @@ function App() {
         <Route path ="/:id" element={<JobDetails/>}/>
         <Route path="/admin/:id" element={<Admin />} />
         <Route path="/login" element={<SignIn />} />
-        <Route path="/jobcreate" element={<JobCreating/>} />
+        <Route path="/createjob" element={<JobCreating/>} />
       </Routes>
     </div>
   );

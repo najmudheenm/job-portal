@@ -1,12 +1,19 @@
 import "./SignIn.style.scss";
-import { useState } from "react";
-import axios from "axios";
-
+import { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 //components
 import FormInput from "../../components/Form-input/FormInput.component";
 import CustomButton from "../../components/Custom-Button/CustomButton.component";
 
+//redux
+import {useDispatch,useSelector} from "react-redux"
+import {setCurrentAdmin} from '../../redux/admin/adminAction'
+
 const SignInPage = ({ URL }) => {
+
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
+  const user =useSelector(user=>user.admin)
   
   const [userData, setUserData] = useState([]);
 
@@ -17,18 +24,17 @@ const SignInPage = ({ URL }) => {
 
   const signInSubmitHandler = async (e) => {
     e.preventDefault();
-    try{
-      const response = await axios.post(`${process.env.REACT_APP_LOGIN_URL}`,
-        {
-          ...userData,
-        },
-        {withCredentials:true}
-        );
-        console.log(response);
-    }catch(err){
-      console.log(err);
-    }
+
+    dispatch(setCurrentAdmin(userData.email,userData.password))
+   
   };
+
+  useEffect(() => {
+    if(user.email.length){
+      navigate(-1)
+    }
+  },[user])
+  
   return (
     <div className="sign-page">
       <form onSubmit={signInSubmitHandler} className="login-form-container">
