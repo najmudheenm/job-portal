@@ -89,7 +89,7 @@ const Avatar = ({jobId,...props}) => {
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
-        action="http://localhost:3002/resume"
+        action={`${process.env.REACT_APP_BASE_URL}resume`}
         withCredentials
         beforeUpload={beforeUpload}
         onChange={handleChange}

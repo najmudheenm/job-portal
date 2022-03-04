@@ -11,6 +11,7 @@ export const setCurrentAdmin = (email, password) => async (dispatch) => {
       },
       { withCredentials: true }
     );
+    console.log(response);
     if (response.status == 200) {
       dispatch({
         type: "SET_CURRENT_ADMIN",

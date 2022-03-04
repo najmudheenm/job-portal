@@ -16,7 +16,7 @@ const HeaderNav = () => {
         <div className="logo" />
         <Menu theme="dark" mode="horizontal">
           <Menu.Item key="1">
-            <NavLink to="/" exact>Careers</NavLink>
+            <NavLink to="/"  exact="true">Careers</NavLink>
           </Menu.Item>
           {user.email.length ?
           (<><Menu.Item key="2">
